@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "UnrealAssistant",
+	"Description": "AI-powered assistant that can interact with the editor inside Unreal Engine.",
+	"Category": "Other",
+	"CreatedBy": "Sinan Karakaya",
+	"CreatedByURL": "sinankarakaya,fr",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "UnrealAssistant",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
