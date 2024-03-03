@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
+#include "HttpModule.h"
+#include "Interfaces/IHttpRequest.h"
+#include "Interfaces/IHttpResponse.h"
+#include "Json.h"
 
 class FToolBarBuilder;
 class FMenuBuilder;
@@ -26,8 +30,14 @@ private:
 	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs &SpawnTabArgs);
 
 	FReply OnAskClicked();
+	void OnAskCallback(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
-	bool bIsAsking = false;
+	FText AskText;
+	bool bIsWaitingForResponse = false;
+
+	FHttpModule &httpModule = FHttpModule::Get();
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> pRequest = httpModule.CreateRequest();
+	TSharedPtr<FJsonObject> AskRequest = MakeShareable(new FJsonObject);
 };
