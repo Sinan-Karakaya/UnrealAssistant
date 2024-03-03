@@ -5,6 +5,7 @@
 #include "UnrealAssistantCommands.h"
 #include "Misc/MessageDialog.h"
 #include "ToolMenus.h"
+#include "Widgets/Input/SMultiLineEditableTextBox.h"
 
 static const FName UnrealAssistantTabName("UnrealAssistant");
 
@@ -53,24 +54,42 @@ void FUnrealAssistantModule::PluginButtonClicked()
 
 TSharedRef<SDockTab> FUnrealAssistantModule::OnSpawnPluginTab(const FSpawnTabArgs &SpawnTabArgs)
 {
-	FText WidgetText = FText::Format(
-		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),
-		FText::FromString(TEXT("FUnrealAssistantModule::OnSpawnPluginTab")),
-		FText::FromString(TEXT("UnrealAssistant.cpp"))
-	);
+	FText WidgetText = LOCTEXT("WindowWidgetText", "");
 
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
 			// Put your tab content here!
-			SNew(SBox)
-				.HAlign(HAlign_Center)
-				.VAlign(VAlign_Center)
+			SNew(SVerticalBox)
+			+SVerticalBox::Slot()
+				.Padding(FMargin(6.f))
+				.FillHeight(250.f)
 				[
-					SNew(STextBlock)
+					SNew(SMultiLineEditableTextBox)
 						.Text(WidgetText)
+						.HintText(LOCTEXT("PromptHintText", "Ask what you want your Assistant to do..."))
+						.Padding(FMargin(12.f, 6.f, 12.f, 6.f))
+				]
+			+SVerticalBox::Slot()
+				.AutoHeight()
+				.Padding(FMargin(0.f, 4.f, 0.f, 0.f))
+				[
+					SNew(SBox)
+					.WidthOverride(200)
+						[
+							SNew(SButton)
+								.Text(LOCTEXT("AskButton", "Ask"))
+								.OnClicked_Raw(this, &FUnrealAssistantModule::OnAskClicked)
+								.IsEnabled(!bIsAsking)
+								.HAlign(HAlign_Center)
+						]
 				]
 		];
+}
+
+FReply FUnrealAssistantModule::OnAskClicked()
+{
+	return FReply::Handled();
 }
 
 void FUnrealAssistantModule::RegisterMenus()
